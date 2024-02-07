@@ -20,8 +20,13 @@ last update: 23/12/2014
 */
 
 #pragma once
-#include <cv.h>
-#include <highgui.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/core/types_c.h>
+#include <opencv2/core/core_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
+#include <opencv2/core/utility.hpp>
 //#include "opencv2\core\internal.hpp"
 
 
@@ -68,20 +73,6 @@ float inline Slope(float x1, float y1, float x2, float y2)
 			return ((num > 0) ? float(_INFINITY) : float(-_INFINITY));
 		}
 };
-
-//void cvCanny2(	const void* srcarr, void* dstarr,
-//				double low_thresh, double high_thresh,
-//				void* dxarr, void* dyarr,
-//                int aperture_size );
-//
-//void cvCanny3(	const void* srcarr, void* dstarr,
-//				void* dxarr, void* dyarr,
-//                int aperture_size );
-
-void Canny2(	InputArray image, OutputArray _edges,
-				OutputArray _sobel_x, OutputArray _sobel_y,
-                double threshold1, double threshold2,
-                int apertureSize, bool L2gradient );
 
 void Canny3(	InputArray image, OutputArray _edges,
 				OutputArray _sobel_x, OutputArray _sobel_y,

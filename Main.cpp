@@ -19,12 +19,13 @@ michele.fornaciari@unimore.it
 last update: 23/12/2014
 */
 
-//#include <cv.hpp>
 #include <limits.h> /* PATH_MAX */
 #include <stdlib.h>
 #include <stdio.h>
-#include <cv.h>
-#include <highgui.h>
+// #include <cv.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 
 #include "EllipseDetectorYaed.h"
 #include <fstream>
@@ -287,7 +288,7 @@ void OnImage(char *image_path)
 
 	// Convert to grayscale
 	Mat1b gray;
-	cvtColor(image, gray, CV_BGR2GRAY);
+	cvtColor(image, gray, COLOR_BGR2GRAY);
 
 
 	// Parameters Settings (Sect. 4.2)
@@ -423,7 +424,7 @@ void OnVideo()
 	{	
 		Mat3b image;
 		cap >> image;
-		cvtColor(image, gray, CV_BGR2GRAY);	
+		cvtColor(image, gray, COLOR_BGR2GRAY);	
 
 			vector<Ellipse> ellsYaed;
 		Mat1b gray2 = gray.clone();
@@ -499,7 +500,7 @@ void OnDataset()
 
 		// Convert to grayscale
 		Mat1b gray;
-		cvtColor(image, gray, CV_BGR2GRAY);
+		cvtColor(image, gray, COLOR_BGR2GRAY);
 
 		// Parameters Settings (Sect. 4.2)
 		int		iThLength = 16;
@@ -647,7 +648,7 @@ int main2()
 		
 		// Convert to grayscale
 		Mat1b gray;
-		cvtColor(image, gray, CV_BGR2GRAY);
+		cvtColor(image, gray, COLOR_BGR2GRAY);
 		
 		// Parameters Settings (Sect. 4.2)
 		int		iThLength = 16;
