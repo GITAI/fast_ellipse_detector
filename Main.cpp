@@ -285,19 +285,23 @@ void OnImage(char *image_path)
 	// Read image
 	Mat3b image = imread(filename);
 	Size sz = image.size();
-
+    int width = sz.width;
+    int height = sz.height;
+    int scale = ceil((float)width / 800) - 1;
+	// int width = 800;
+	// int height = 600;
+	
 	// Convert to grayscale
 	Mat1b gray;
 	cvtColor(image, gray, COLOR_BGR2GRAY);
 
-
 	// Parameters Settings (Sect. 4.2)
-	int		iThLength = 16;
+	int		iThLength = (int)(16 * pow(2, scale));
 	float	fThObb = 3.0f;
 	float	fThPos = 1.0f;
 	float	fTaoCenters = 0.05f;
 	int 	iNs = 16;
-	float	fMaxCenterDistance = sqrt(float(sz.width*sz.width + sz.height*sz.height)) * fTaoCenters;
+	float	fMaxCenterDistance = sqrt(float(width*width + height*height)) * fTaoCenters;
 
 	float	fThScoreScore = 0.4f;
 
