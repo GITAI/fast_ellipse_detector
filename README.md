@@ -12,7 +12,7 @@ Michele Fornaciari, Andrea Prati, Rita Cucchiara,
 ### How to compile:
 
 ```sh
-g++ Main.cpp EllipseDetectorYaed.cpp common.cpp -o ellipse_det -std=c++11 `pkg-config --cflags --libs opencv`
+g++ Main.cpp EllipseDetectorYaed.cpp common.cpp -o ellipse_det -std=c++11 `pkg-config --cflags --libs opencv4`
 ```
 
 ### How to run:
