@@ -1588,7 +1588,7 @@ void CEllipseDetectorYaed::RemoveShortEdges(Mat1b& edges, Mat1b& clean)
 
 
 
-void CEllipseDetectorYaed::PrePeocessing(Mat1b& I,
+void CEllipseDetectorYaed::PreProcessing(Mat1b& I,
 	Mat1b& DP,
 	Mat1b& DN
 	)
@@ -1731,7 +1731,7 @@ void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses)
 
 	// Preprocessing
 	// From input image I, find edge point with coarse convexity along positive (DP) or negative (DN) diagonal
-	PrePeocessing(I, DP, DN);
+	PreProcessing(I, DP, DN);
 
 	// Detect edges and find convexities
 	DetectEdges13(DP, points_1, points_3);
