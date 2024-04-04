@@ -164,7 +164,7 @@ private:
 	//generate keys from pair and indicse
 	uint inline GenerateKey(uchar pair, ushort u, ushort v);
 
-	void PrePeocessing(Mat1b& I, Mat1b& DP, Mat1b& DN);
+	void PreProcessing(Mat1b& I, Mat1b& DP, Mat1b& DN);
 
 	void RemoveShortEdges(Mat1b& edges, Mat1b& clean);
 
