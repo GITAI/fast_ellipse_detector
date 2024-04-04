@@ -1590,7 +1590,8 @@ void CEllipseDetectorYaed::RemoveShortEdges(Mat1b& edges, Mat1b& clean)
 
 void CEllipseDetectorYaed::PreProcessing(Mat1b& I,
 	Mat1b& DP,
-	Mat1b& DN
+	Mat1b& DN,
+    Mat1b& E
 	)
 {
 
@@ -1600,7 +1601,6 @@ void CEllipseDetectorYaed::PreProcessing(Mat1b& I,
 	GaussianBlur(I, I, _szPreProcessingGaussKernelSize, _dPreProcessingGaussSigma);
 
 	// Temp variables
-	Mat1b E;				//edge mask
 	Mat1s DX, DY;			//sobel derivatives
 
 	// Detect edges
@@ -1702,7 +1702,7 @@ void CEllipseDetectorYaed::DetectAfterPreProcessing(vector<Ellipse>& ellipses, M
 };
 
 
-void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses)
+void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses, Mat1b& E)
 {
 	Tic(1); //prepare data structure
 
@@ -1731,7 +1731,7 @@ void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses)
 
 	// Preprocessing
 	// From input image I, find edge point with coarse convexity along positive (DP) or negative (DN) diagonal
-	PreProcessing(I, DP, DN);
+	PreProcessing(I, DP, DN, E);
 
 	// Detect edges and find convexities
 	DetectEdges13(DP, points_1, points_3);
