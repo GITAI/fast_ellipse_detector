@@ -25,7 +25,7 @@ last update: 23/12/2014
 CEllipseDetectorYaed::CEllipseDetectorYaed(void) : _times(6, 0.0), _timesHelper(6, 0.0)
 {
 	// Default Parameters Settings
-	_szPreProcessingGaussKernelSize = Size(5, 5);
+	_szPreProcessingGaussKernelSize = Size(3, 3);
 	_dPreProcessingGaussSigma = 1.0;
 	_fThPosition = 1.0f;
 	_fMaxCenterDistance = 100.0f * 0.05f;
@@ -1605,7 +1605,7 @@ void CEllipseDetectorYaed::PreProcessing(Mat1b& I,
 	Mat1s DX, DY;			//sobel derivatives
 
 	// Detect edges
-	Canny3(B, E, DX, DY, 3, false);
+	Canny3(B, E, DX, DY, _szPreProcessingGaussKernelSize.height, false);
 
 	Toc(0); //edge detection
 
