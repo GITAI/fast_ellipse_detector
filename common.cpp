@@ -735,9 +735,9 @@ void cvCanny3(	const void* srcarr, void* dstarr,
     if( !CV_ARE_SIZES_EQ( src, dst ))
         CV_Error( CV_StsUnmatchedSizes, "" );
 	
-    aperture_size &= INT_MAX;
-    if( (aperture_size & 1) == 0 || aperture_size < 3 || aperture_size > 7 )
-        CV_Error( CV_StsBadFlag, "" );
+    // aperture_size &= INT_MAX;
+    // if( (aperture_size & 1) == 0 || aperture_size < 3 || aperture_size > 7 )
+    //     CV_Error( CV_StsBadFlag, "" );
 
 
 	size.width = src->cols;
