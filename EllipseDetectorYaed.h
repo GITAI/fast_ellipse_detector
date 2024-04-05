@@ -131,7 +131,7 @@ public:
 	void DetectAfterPreProcessing(vector<Ellipse>& ellipses, Mat1b& E, const Mat1f& PHI=Mat1f());
 
 	//Detect the ellipses in the gray image
-	void Detect(Mat1b& gray, vector<Ellipse>& ellipses, Mat1b& edge);
+	void Detect(Mat1b& gray, vector<Ellipse>& ellipses, Mat1b& edge, Mat1b& blur);
 	
 	//Draw the first iTopN ellipses on output
 	void DrawDetectedEllipses(Mat3b& output, vector<Ellipse>& ellipses, int iTopN=0, int thickness=2);
@@ -164,7 +164,7 @@ private:
 	//generate keys from pair and indicse
 	uint inline GenerateKey(uchar pair, ushort u, ushort v);
 
-	void PreProcessing(Mat1b& I, Mat1b& DP, Mat1b& DN, Mat1b& E);
+	void PreProcessing(Mat1b& I, Mat1b& DP, Mat1b& DN, Mat1b& E, Mat1b& B);
 
 	void RemoveShortEdges(Mat1b& edges, Mat1b& clean);
 
