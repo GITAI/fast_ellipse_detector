@@ -102,6 +102,10 @@ class CEllipseDetectorYaed
 	float	_fMinScore;							// minimum score to confirm a detection
 	float	_fMinReliability;					// minimum auxiliary score to confirm a detection
 
+    bool    _bCannyNormalizeForThreshold;
+    float   _fCannyPercentOfPixelsNotEdges;
+    float   _fCannyThresholdRatio;
+
 
 	// auxiliary variables
 	Size	_szImg;			// input image size
@@ -146,7 +150,10 @@ public:
 							float	fDistanceToEllipseContour,
 							float	fMinScore,
 							float	fMinReliability,
-							int     iNs
+							int     iNs,
+                            bool    bCannyNormalizeForThreshold,
+                            float   fCannyPercentOfPixelsNotEdges,
+                            float   fCannyThresholdRatio
 						);
 
 	// Return the execution time

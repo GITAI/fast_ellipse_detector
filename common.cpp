@@ -702,7 +702,11 @@ bool SortTopLeft2BottomRight(const Point& lhs, const Point& rhs)
 
 void cvCanny3(	const void* srcarr, void* dstarr,
 				void* dxarr, void* dyarr,
-                int aperture_size )
+                int aperture_size,
+                const bool normalize_for_threshold,
+	            const double percent_of_pixels_not_edges,
+   	            const double threshold_ratio
+             )
 {
     //cv::Ptr<CvMat> dx, dy;
     cv::AutoBuffer<char> buffer;
@@ -764,14 +768,15 @@ void cvCanny3(	const void* srcarr, void* dstarr,
 	}
 	
 	//% Normalize for threshold selection
-	//normalize(magGrad, magGrad, 0.0, 1.0, NORM_MINMAX);
+    if (normalize_for_threshold)
+    {
+      normalize(magGrad, magGrad, 0.0, 1.0, NORM_MINMAX);
+    }
 
 	//% Determine Hysteresis Thresholds
 	
 	//set magic numbers
 	const int NUM_BINS = 64;	
-	const double percent_of_pixels_not_edges = 0.9;
-	const double threshold_ratio = 0.3;
 
 	//compute histogram
 	int bin_size = cvFloor(maxGrad / float(NUM_BINS) + 0.5f) + 1;
@@ -1033,7 +1038,11 @@ void cvCanny3(	const void* srcarr, void* dstarr,
 
 void Canny3(	InputArray image, OutputArray _edges,
 				OutputArray _sobel_x, OutputArray _sobel_y,
-                int apertureSize, bool L2gradient )
+                int apertureSize, bool L2gradient,
+                bool normalize_for_threshold,
+	            double percent_of_pixels_not_edges,
+   	            double threshold_ratio
+                )
 {
     Mat src = image.getMat();
     _edges.create(src.size(), CV_8U);
@@ -1048,7 +1057,11 @@ void Canny3(	InputArray image, OutputArray _edges,
 
     cvCanny3(	&c_src, &c_dst, 
 				&c_dx, &c_dy,
-				apertureSize + (L2gradient ? CV_CANNY_L2_GRADIENT : 0));
+				apertureSize + (L2gradient ? CV_CANNY_L2_GRADIENT : 0),
+                normalize_for_threshold,
+	            percent_of_pixels_not_edges,
+   	            threshold_ratio
+                );
 };
 
 
