@@ -102,6 +102,10 @@ class CEllipseDetectorYaed
 	float	_fMinScore;							// minimum score to confirm a detection
 	float	_fMinReliability;					// minimum auxiliary score to confirm a detection
 
+    bool    _bCannyNormalizeForThreshold;
+    float   _fCannyPercentOfPixelsNotEdges;
+    float   _fCannyThresholdRatio;
+
 
 	// auxiliary variables
 	Size	_szImg;			// input image size
@@ -131,7 +135,7 @@ public:
 	void DetectAfterPreProcessing(vector<Ellipse>& ellipses, Mat1b& E, const Mat1f& PHI=Mat1f());
 
 	//Detect the ellipses in the gray image
-	void Detect(Mat1b& gray, vector<Ellipse>& ellipses);
+	void Detect(Mat1b& gray, vector<Ellipse>& ellipses, Mat1b& edge, Mat1b& blur);
 	
 	//Draw the first iTopN ellipses on output
 	void DrawDetectedEllipses(Mat3b& output, vector<Ellipse>& ellipses, int iTopN=0, int thickness=2);
@@ -146,7 +150,10 @@ public:
 							float	fDistanceToEllipseContour,
 							float	fMinScore,
 							float	fMinReliability,
-							int     iNs
+							int     iNs,
+                            bool    bCannyNormalizeForThreshold,
+                            float   fCannyPercentOfPixelsNotEdges,
+                            float   fCannyThresholdRatio
 						);
 
 	// Return the execution time
@@ -164,7 +171,7 @@ private:
 	//generate keys from pair and indicse
 	uint inline GenerateKey(uchar pair, ushort u, ushort v);
 
-	void PrePeocessing(Mat1b& I, Mat1b& DP, Mat1b& DN);
+	void PreProcessing(Mat1b& I, Mat1b& DP, Mat1b& DN, Mat1b& E, Mat1b& B);
 
 	void RemoveShortEdges(Mat1b& edges, Mat1b& clean);
 

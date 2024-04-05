@@ -76,7 +76,11 @@ float inline Slope(float x1, float y1, float x2, float y2)
 
 void Canny3(	InputArray image, OutputArray _edges,
 				OutputArray _sobel_x, OutputArray _sobel_y,
-                int apertureSize, bool L2gradient );
+                int apertureSize, bool L2gradient,
+                bool normalize_for_threshold,
+	            double percent_of_pixels_not_edges,
+   	            double threshold_ratio
+                );
 
 
 float inline ed2(const Point& A, const Point& B)

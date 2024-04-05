@@ -25,7 +25,7 @@ last update: 23/12/2014
 CEllipseDetectorYaed::CEllipseDetectorYaed(void) : _times(6, 0.0), _timesHelper(6, 0.0)
 {
 	// Default Parameters Settings
-	_szPreProcessingGaussKernelSize = Size(5, 5);
+	_szPreProcessingGaussKernelSize = Size(3, 3);
 	_dPreProcessingGaussSigma = 1.0;
 	_fThPosition = 1.0f;
 	_fMaxCenterDistance = 100.0f * 0.05f;
@@ -36,6 +36,9 @@ CEllipseDetectorYaed::CEllipseDetectorYaed(void) : _times(6, 0.0), _timesHelper(
 	_fMinScore = 0.4f;
 	_fMinReliability = 0.4f;
 	_uNs = 16;
+    _bCannyNormalizeForThreshold = true;
+    _fCannyPercentOfPixelsNotEdges = 0.9;
+    _fCannyThresholdRatio = 0.3;
 
 	srand(unsigned(time(NULL)));
 }
@@ -54,7 +57,10 @@ void CEllipseDetectorYaed::SetParameters(Size	szPreProcessingGaussKernelSize,
 	float	fDistanceToEllipseContour,
 	float	fMinScore,
 	float	fMinReliability,
-	int     iNs
+	int     iNs,
+    bool    bCannyNormalizeForThreshold,
+    float   fCannyPercentOfPixelsNotEdges,
+    float   fCannyThresholdRatio
 	)
 {
 	_szPreProcessingGaussKernelSize = szPreProcessingGaussKernelSize;
@@ -67,6 +73,9 @@ void CEllipseDetectorYaed::SetParameters(Size	szPreProcessingGaussKernelSize,
 	_fMinScore = fMinScore;
 	_fMinReliability = fMinReliability;
 	_uNs = iNs;
+    _bCannyNormalizeForThreshold = bCannyNormalizeForThreshold;
+    _fCannyPercentOfPixelsNotEdges = fCannyPercentOfPixelsNotEdges;
+    _fCannyThresholdRatio = fCannyThresholdRatio;
 
 	_fMaxCenterDistance2 = _fMaxCenterDistance * _fMaxCenterDistance;
 
@@ -1588,23 +1597,26 @@ void CEllipseDetectorYaed::RemoveShortEdges(Mat1b& edges, Mat1b& clean)
 
 
 
-void CEllipseDetectorYaed::PrePeocessing(Mat1b& I,
+void CEllipseDetectorYaed::PreProcessing(Mat1b& I,
 	Mat1b& DP,
-	Mat1b& DN
+	Mat1b& DN,
+    Mat1b& E,
+    Mat1b& B
 	)
 {
 
 	Tic(0); //edge detection
 
 	// Smooth image
-	GaussianBlur(I, I, _szPreProcessingGaussKernelSize, _dPreProcessingGaussSigma);
+	GaussianBlur(I, B, _szPreProcessingGaussKernelSize, _dPreProcessingGaussSigma);
 
 	// Temp variables
-	Mat1b E;				//edge mask
 	Mat1s DX, DY;			//sobel derivatives
 
 	// Detect edges
-	Canny3(I, E, DX, DY, 3, false);
+	Canny3(B, E, DX, DY, _szPreProcessingGaussKernelSize.height, false,
+           _bCannyNormalizeForThreshold, _fCannyPercentOfPixelsNotEdges,
+           _fCannyThresholdRatio);
 
 	Toc(0); //edge detection
 
@@ -1702,7 +1714,7 @@ void CEllipseDetectorYaed::DetectAfterPreProcessing(vector<Ellipse>& ellipses, M
 };
 
 
-void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses)
+void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses, Mat1b& E, Mat1b& B)
 {
 	Tic(1); //prepare data structure
 
@@ -1731,7 +1743,7 @@ void CEllipseDetectorYaed::Detect(Mat1b& I, vector<Ellipse>& ellipses)
 
 	// Preprocessing
 	// From input image I, find edge point with coarse convexity along positive (DP) or negative (DN) diagonal
-	PrePeocessing(I, DP, DN);
+	PreProcessing(I, DP, DN, E, B);
 
 	// Detect edges and find convexities
 	DetectEdges13(DP, points_1, points_3);
